@@ -1,15 +1,9 @@
 
-library(ggplot2)
-library(leaflet)
 source("Code/TrendingTopics.R")
-source("Code/WordCloud.R")
-source("Code/getSentimentScore.R")
-source("Code/AnalisisSentimientoA.R")
-
-
-
 library(shiny)
 library(shinydashboard)
+library(leaflet)
+
 
 dashboardPage(
   dashboardHeader(title = "Andotter"),
