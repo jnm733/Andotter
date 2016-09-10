@@ -1,5 +1,3 @@
-
-
 library(
   shiny)
 library(ggplot2)
@@ -10,10 +8,20 @@ source("Code/AnalisisSentimientoB.R")
 
 shinyServer(function(input, output, session) {
 
+  observeEvent(input$menu1, {
+    limit = getCurRateLimitInfo()
+    output$limitTweet <- renderText({ 
+      limit$remaining[62]    }) 
+    output$limitTrending <- renderText({ 
+      limit$remaining[65]    }) 
+  })
+  
   observe({
     country <- input$country
     choices = getTrendingTopicsState(country)
     updateSelectInput(session, "state", choices=choices, selected = country)
+    
+     
   })
   
   output$trendingTable <- renderTable({
@@ -33,6 +41,7 @@ shinyServer(function(input, output, session) {
     n <- input$nSlider
     inputTend <- input$tendenciaText
     lang <- input$langSelect
+    countryIn <- input$countryAn
     withProgress(message = 'Por favor, espera',
                  detail = 'Realizando análisis...', value = 0, {
                    if(inputTend == "" && input$tendenciaSelect == ""){
@@ -42,20 +51,20 @@ shinyServer(function(input, output, session) {
                    if(inputTend == ""){
                      if(lang == "Español"){
                      inputTend = input$tendenciaSelect
-                     tweets = getTweets(input$tendenciaSelect, n, "es")
+                     tweets = getTweets(input$tendenciaSelect, n, "es", countryIn)
                      AnalisisSentimientoASpanish = analisisSentimientoSpanishA(tweets)
                      }else{
                        inputTend = input$tendenciaSelect
-                       tweets = getTweets(input$tendenciaSelect, n, "en")
+                       tweets = getTweets(input$tendenciaSelect, n, "en", countryIn)
                        AnalisisSentimientoASpanish = analisisSentimientoInglesA(tweets)
                      }
                    }
                    else{
                      if(lang == "Español"){
-                       tweets = getTweets(inputTend, n, "es")
+                       tweets = getTweets(inputTend, n, "es", countryIn)
                      AnalisisSentimientoASpanish = analisisSentimientoSpanishA(tweets)
                      }else{
-                       tweets = getTweets(inputTend, n, "en")
+                       tweets = getTweets(inputTend, n, "en", countryIn)
                        AnalisisSentimientoASpanish = analisisSentimientoInglesA(tweets)
                      }
                    }
@@ -85,6 +94,7 @@ shinyServer(function(input, output, session) {
     n <- input$nSlider
     inputTend <- input$tendenciaText
     lang <- input$langSelect
+    countryIn <- input$countryAn
     withProgress(message = 'Por favor, espera',
                  detail = 'Realizando análisis...', value = 0, {
                    if(inputTend == "" && input$tendenciaSelect == ""){
@@ -94,7 +104,7 @@ shinyServer(function(input, output, session) {
                    if(inputTend == ""){
                      if(lang == "Inglés"){
                        inputTend = input$tendenciaSelect
-                       tweets = getTweets(input$tendenciaSelect, n, "en")
+                       tweets = getTweets(input$tendenciaSelect, n, "en", countryIn)
                        AnalisisSentimientoBEmotion = analisisSentimientoEnglishBEmotion(tweets)
                        AnalisisSentimientoBPolarity = analisisSentimientoeEnglishBPolarity(tweets)
                      }else{
@@ -104,7 +114,7 @@ shinyServer(function(input, output, session) {
                    }
                    else{
                      if(lang == "Inglés"){
-                       tweets = getTweets(inputTend, n, "en")
+                       tweets = getTweets(inputTend, n, "en", countryIn)
                        AnalisisSentimientoBEmotion = analisisSentimientoEnglishBEmotion(tweets)
                        AnalisisSentimientoBPolarity = analisisSentimientoeEnglishBPolarity(tweets)
                      }else{

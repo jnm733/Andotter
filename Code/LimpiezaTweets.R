@@ -18,20 +18,11 @@ catch.error = function(x)
 cleanTweets = function(tweet){
   
   
-  
-  
-  #  remove html links, which are not required for sentiment analysis
   tweet = gsub("(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", " ", tweet)
-  # First we will remove retweet entities from the stored tweets (text)
   tweet = gsub("(RT|via)((?:\\b\\W*@\\w+)+)", " ", tweet)
-  # Then remove all "#Hashtag"
   tweet = gsub("#\\w+", " ", tweet)
-  # Then remove all "@people"
   tweet = gsub("@\\w+", " ", tweet)
-  # Then remove all the punctuation
-  #tweet = gsub("[[:punct:]]", " ", tweet)
-  # Then remove numbers, we need only text for analytics
-  
+
   tweet = gsub("â", "¿", tweet)
   tweet = gsub("Ã¡", "a", tweet)
   tweet = gsub("Ã©", "e", tweet)
@@ -46,16 +37,11 @@ cleanTweets = function(tweet){
   tweet = gsub("\n", " ", tweet)
   
   
-  # finally, we remove unnecessary spaces (white spaces, tabs etc)
   tweet = gsub("[ \t]{2,}", " ", tweet)
   tweet = gsub("^\\s+|\\s+$", "", tweet)
   tweet = chartr('áéíóú','aeiou', tweet)
   
-  
-  
-  
-  # if anything else, you feel, should be removed, you can. For example "slang words" etc using the above function and methods.
-  # Next we'll convert all the word in lower case. This makes uniform pattern.
+
   tweet = catch.error(tweet)
   tweet
 

@@ -5,6 +5,7 @@ trends = c()
 getTrendingTopics = function(){
 #return data frame with name, country & woeid.
 List = unique(as.list(Locs$country))
+
 # Where woeid is a numerical identification code describing a location ID
 return(List)
 }

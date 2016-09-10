@@ -1,9 +1,21 @@
 source("Code/LimpiezaTweets.R", encoding="utf-8")
 
-getTweets = function(tendencia, n, lang){
-  #Obtención de Tweets español
+getTweets = function(tendencia, n, lang, countryInput){
+  
+  if(countryInput == "Todas"){
   AnalisisTweetsSpanish = searchTwitter(tendencia, n, lang = lang, resultType = "recent")
   AnalisisTweetsSpanish
+  }else{
+    paises = read.csv("Data/paises.csv")
+    colnames(paises) <- c("iso3166", "latitude", "longitude", "country")
+    paises = subset(paises, country == countryInput)
+    geocode = paises$latitude[1]
+    geocode = paste(geocode, paises$longitude[1], sep=',')
+    geocode = paste(geocode, "500km", sep=", ")
+
+    AnalisisTweetsSpanish = searchTwitter(tendencia, n, lang = lang, resultType = "recent", geocode = geocode)
+    AnalisisTweetsSpanish
+  }
   
   #AnalisisTweetsSpanish = strip_retweets(AnalisisTweetsSpanish, strip_manual = TRUE, strip_mt = TRUE)
   

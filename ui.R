@@ -64,9 +64,15 @@ dashboardPage(
                   label = "Número de Tweets a recolectar",
                   min = 10, max = 200, value = 100, step = 1
       ),
+      selectInput(
+        inputId = "countryAn",
+        label = "Localización geográfica",
+        selected = "Todas",
+        choices = c("Todas",getTrendingTopics())
+      ),
       selectInput(inputId = "langSelect", label = "Idioma de los Tweets", choices = c("Español", "Inglés"), selected = "Español"),
       dateRangeInput(inputId = "fechaRange", label = "Rango de fecha de publicación de los Tweets a analizar", start = "2010-01-01", end = Sys.Date(), max = Sys.Date(), language = "es")
-
+      
     )
   ),
   ##########################################################
@@ -76,23 +82,14 @@ dashboardPage(
     tabItem(
       tabName = "inicio",
       fluidRow(
-        valueBox(10 * 2, "New Orders", icon = icon("credit-card")),
+        
+        valueBox(textOutput("limitTweet"), "Búsquedas de tweets disponibles", icon = icon("twitter"),width = 6),
         
         valueBox(
-          10 * 2,
-          "New Orders",
-          icon = icon("credit-card"),
-          color = "yellow"
-        ),
+          textOutput("limitTrending"), "Búsquedas de Trending Topics disponibles", icon = icon("line-chart"), color = "yellow",width = 6)
         
-        valueBox(
-          10 * 2,
-          "New Orders",
-          icon = icon("credit-card"),
-          color = "light-blue"
-        )
+        
       ),
-      
       fluidRow(
         box(
           title = "Andotter",
@@ -101,13 +98,14 @@ dashboardPage(
           width = 12,
           h4(
             align = "center",
-            "Andotter es parte del Trabajo Fin de Grado de José Luis Navarro Motos, estudiante del Grado en Ingeniería Informática en la Universidad de Almería"
+            "Andotter es parte del Trabajo Fin de Grado de José Luis Navarro Motos, estudiante del Grado en Ingeniería Informática de la Universidad de Almería"
           ),
           h4(
             align = "center",
             "Con el desarrollo de este proyecto se pretende obtener una herramienta que nos permita analizar el sentimiento (positivo, negativo o neutro) de los usuarios de Twitter ante una determinada tendencia o temática, todo esto desde un análisis temporal y geográfico."
           ),
-          img(align = "center", src = "escudo-Ual.gif")
+          hr(),
+          img(align = "center", src = "escudo-Ual.gif", height = 150, width = 400, style="display: block; margin-left: auto; margin-right: auto;")
         )
         
       )
