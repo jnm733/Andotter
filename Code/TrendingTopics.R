@@ -1,5 +1,5 @@
 library(stringr)
-#Locs <- availableTrendLocations()
+Locs <- availableTrendLocations()
 trends = c()
 #Obtención de trending topics
 getTrendingTopics = function(){

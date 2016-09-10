@@ -1,4 +1,5 @@
 
+source("Code/OAuth.R")
 source("Code/TrendingTopics.R")
 library(shiny)
 library(shinydashboard)
@@ -15,14 +16,22 @@ dashboardPage(
       menuItem(
         "Trending Topics",
         icon = icon("twitter"),
-        tabName = "trending",
-        badgeLabel = "new",
-        badgeColor = "green"
+        tabName = "trending"
+        
+      ),
+      hr(),
+      h5("Análisis de Sentimiento"),
+      menuItem(
+        "Basado en el léxico",
+        icon = icon("book"),
+        tabName = "analisis"
       ),
       menuItem(
-        "Análisis de Sentimiento",
+        "Algoritmo Naive Bayes",
         icon = icon("bar-chart"),
-        tabName = "analisis"
+        tabName = "naiveBayes",
+        badgeLabel = "Inglés",
+        badgeColor = "green"
       )
       
     ),
@@ -38,14 +47,14 @@ dashboardPage(
       ),
       selectInput(
         inputId = "state",
-        label = "Seleccionar estado, comunidad o provincia",
+        label = "Seleccionar estado o provincia",
         choices = c("Spain")
       ),
       em("*Nombre del país para una búsqueda del país completo")
       
     ),
     conditionalPanel(
-      condition = "input.menu1 == 'analisis'",
+      condition = "input.menu1 == 'analisis' || input.menu1 == 'naiveBayes'",
       hr(),
       strong("Análisis de sentimiento"),
       selectInput(inputId = "tendenciaSelect", label = "Seleccionar un Trending Topic", choices = as.list(trends$Tendencia)),
@@ -55,8 +64,8 @@ dashboardPage(
                   label = "Número de Tweets a recolectar",
                   min = 10, max = 200, value = 100, step = 1
       ),
-      dateRangeInput(inputId = "fechaRange", label = "Rango de fecha de publicación de los Tweets a analizar", start = "2010-01-01", end = Sys.Date(), max = Sys.Date(), language = "es"),
-      checkboxGroupInput(inputId = "idiomasCheck", label = "Idiomas válidos para los Tweets", choices = c("es", "en"))
+      selectInput(inputId = "langSelect", label = "Idioma de los Tweets", choices = c("Español", "Inglés"), selected = "Español"),
+      dateRangeInput(inputId = "fechaRange", label = "Rango de fecha de publicación de los Tweets a analizar", start = "2010-01-01", end = Sys.Date(), max = Sys.Date(), language = "es")
 
     )
   ),
@@ -123,7 +132,8 @@ dashboardPage(
                 status = "info",
                 solidHeader = TRUE,
                 width = 5,
-                leafletOutput("mapOutput")
+                leafletOutput("mapOutput"),
+                textOutput("Click_text")
                 
               )
             )),
@@ -163,8 +173,8 @@ dashboardPage(
                 solidHeader = TRUE,
                 collapsible = TRUE,
                 collapsed = TRUE,
-                tableOutput("temporalTable")
-              ),
+                plotOutput("temporalPlot")
+                ),
               box(
                 title = "Detalle resultado",
                 width = 6,
@@ -175,7 +185,54 @@ dashboardPage(
                 collapsible = TRUE
               )
             )
-            )
+            ),
+    ##########################################################
+    ###################### NAIVE BAYES ###########################
+    tabItem(
+      tabName = "naiveBayes",
+      fluidRow(
+        box(
+          title = "Análisis de Polaridad",
+          width = 7,
+          status = "primary",
+          solidHeader = TRUE,
+          collapsible = TRUE,
+          htmlOutput("polarityHTML"),
+          plotOutput("polarityPlot")
+          
+          
+        ),
+        box(
+          title = "WordCloud",
+          width = 5,
+          status = "info",
+          solidHeader = TRUE,
+          collapsible = TRUE,
+          plotOutput("wordCloudNaive")
+        )
+      ),
+      fluidRow(
+        box(
+          title = "Análisis de Emoción",
+          width = 7,
+          status = "primary",
+          solidHeader = TRUE,
+          collapsible = TRUE,
+          htmlOutput("emotionHTML"),
+          plotOutput("emotionPlot")
+        ),
+        box(
+          title = "Detalle resultado",
+          width = 5,
+          status = "warning",
+          solidHeader = TRUE,
+          collapsed = TRUE,
+          tableOutput("detallePolarityTable"),
+          collapsible = TRUE
+        )
+      )
+      
+    )
     ##########################################################
   ))
 )

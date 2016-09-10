@@ -5,20 +5,14 @@ library(tm)
 library(wordcloud)
 
 
-getWordCloud = function(tendencia, n){
-
-#Obtención de Tweets español
-AnalisisTweetsSpanish = searchTwitter(tendencia, n=n, lang = "es", resultType = "recent")
-
-#Limpieza de Tweets español
-TextTweetsSpanish <- sapply(AnalisisTweetsSpanish, function(x) x$getText())
-AnalisisTweetsLimpioSpanish = cleanTweetsAndRemoveNAs(TextTweetsSpanish)
-
+getWordCloud = function(AnalisisTweetsLimpioSpanish){
 
 
 corpus = Corpus(VectorSource(AnalisisTweetsLimpioSpanish))
 corpus = tm_map(corpus, stripWhitespace)
-corpus = tm_map(corpus, removeWords, c(stopwords("spanish"), tendencia))
+corpus = tm_map(corpus, removeWords, c(stopwords("spanish")))
+corpus = tm_map(corpus, removeWords, c(stopwords("english")))
+
 
 tdm <- TermDocumentMatrix(corpus)
 m = as.matrix(tdm)

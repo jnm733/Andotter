@@ -15,7 +15,10 @@ catch.error = function(x)
 }
 
 #Función para limpiar el tweet
-cleanTweets<- function(tweet){
+cleanTweets = function(tweet){
+  
+  
+  
   
   #  remove html links, which are not required for sentiment analysis
   tweet = gsub("(f|ht)(tp)(s?)(://)(.*)[.|/](.*)", " ", tweet)
@@ -26,9 +29,23 @@ cleanTweets<- function(tweet){
   # Then remove all "@people"
   tweet = gsub("@\\w+", " ", tweet)
   # Then remove all the punctuation
-  tweet = gsub("[[:punct:]]", " ", tweet)
+  #tweet = gsub("[[:punct:]]", " ", tweet)
   # Then remove numbers, we need only text for analytics
+  
+  tweet = gsub("â", "¿", tweet)
+  tweet = gsub("Ã¡", "a", tweet)
+  tweet = gsub("Ã©", "e", tweet)
+  tweet = gsub("Ã³", "o", tweet)
+  tweet = gsub("Ã±", "ñ", tweet)
+  tweet = gsub("[[:punct:]]", " ", tweet)
+  tweet = gsub("ã", "i", tweet)
+  tweet = gsub("Ã ", "i", tweet)
+  
   tweet = gsub("[[:digit:]]", " ", tweet)
+  
+  tweet = gsub("\n", " ", tweet)
+  
+  
   # finally, we remove unnecessary spaces (white spaces, tabs etc)
   tweet = gsub("[ \t]{2,}", " ", tweet)
   tweet = gsub("^\\s+|\\s+$", "", tweet)
@@ -45,7 +62,7 @@ cleanTweets<- function(tweet){
 }
 
 
-cleanTweetsAndRemoveNAs<- function(Tweets) {
+cleanTweetsAndRemoveNAs = function(Tweets) {
   TweetsCleaned = sapply(Tweets, cleanTweets)
   # Remove the "NA" tweets from this tweet list
   TweetsCleaned = TweetsCleaned[!is.na(TweetsCleaned)]
