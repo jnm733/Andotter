@@ -285,6 +285,15 @@ shinyServer(function(input, output, session) {
     m
   })
   
+  output$locOutput <- renderLeaflet({
+    m <- leaflet()
+    m <- addTiles(m)
+    m <- addMarkers(m, -2.404444444444444, 36.8291667, popup = "Universidad de Almería")
+    m <- addPopups(m, -2.404444444444444, 36.8291667, popup= "Universidad de Almería", options = popupOptions(closeButton = TRUE))
+    m <- setView(map = m, -2.404444444444444, 36.8291667, zoom = 12)
+    m
+  })
+  
   observe({
     click<-input$mapOutput_marker_click
     if(is.null(click))

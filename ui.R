@@ -98,16 +98,51 @@ dashboardPage(
           width = 12,
           h4(
             align = "center",
-            "Andotter es parte del Trabajo Fin de Grado de José Luis Navarro Motos, estudiante del Grado en Ingeniería Informática de la Universidad de Almería"
+            "Andotter forma parte del Trabajo de Fin de Grado de José Luis Navarro Motos, estudiante del Grado en Ingeniería Informática de la Universidad de Almería"
           ),
+          br(),
           h4(
             align = "center",
             "Con el desarrollo de este proyecto se pretende obtener una herramienta que nos permita analizar el sentimiento (positivo, negativo o neutro) de los usuarios de Twitter ante una determinada tendencia o temática, todo esto desde un análisis temporal y geográfico."
           ),
           hr(),
-          img(align = "center", src = "escudo-Ual.gif", height = 150, width = 400, style="display: block; margin-left: auto; margin-right: auto;")
-        )
+          img(align = "center", src = "logos.jpg", height = 183, width = 905, style="display: block; margin-left: auto; margin-right: auto;")
+          
+          )
         
+      ),
+      
+      fluidRow(
+        box(
+          title = "Contacto",
+          status = "info",
+          solidHeader = TRUE,
+          width = 5,
+          h4(
+            align = "center",
+            "José Luis Navarro Motos"
+          ),
+          br(),
+          img(align = "center", src = "gmailIcon.png", height = 35, width = 35, style="display: block; margin-left: auto; margin-right: auto;"),
+          h5(
+            align = "center",
+            "joseluisnavarromotos@gmail.com"
+          ),
+          br(),
+          img(align = "center", src = "gitHubIcon.png", height = 35, width = 35, style="display: block; margin-left: auto; margin-right: auto;"),
+          h5(
+            align = "center",
+            "https://github.com/jnm733"
+          )
+      ),
+      
+      box(
+        title = "Localización",
+        status = "info",
+        solidHeader = TRUE,
+        width = 7,
+        leafletOutput("locOutput")
+      )
       )
       
     ),
